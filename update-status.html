@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Complaint Status | Student Complaint Management System</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Notification & Status Bar -->
+  <div class="top-bar">
+    <div class="container">
+      <div>GROUP 7 &bull; Student Grievance Redressal & Complaint Management Portal</div>
+      <div id="system-status-indicator" class="badge-group">Checking backend...</div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">🎓</div>
+        <div class="brand-text">
+          <h1>Student Grievance Portal</h1>
+          <p>Group 7 Complaint Management System</p>
+        </div>
+      </a>
+
+      <button class="mobile-menu-btn" aria-label="Toggle menu">☰</button>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="submit-complaint.html" class="nav-link">Submit Complaint</a></li>
+        <li><a href="complaint-records.html" class="nav-link">Complaint Records</a></li>
+        <li><a href="update-status.html" class="nav-link active">Update Status</a></li>
+        <li><a href="search-complaint.html" class="nav-link">Search & Track</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Main Content (Module 5) -->
+  <main class="main-content">
+    <div class="container" style="max-width: 860px;">
+
+      <div class="page-header">
+        <span class="module-badge">Module 5 &bull; Resolution Workflow</span>
+        <h2>Update Complaint Status</h2>
+        <p>Administrative and coordinator interface to transition complaints through resolution phases: <strong>Pending</strong>, <strong>In Progress</strong>, and <strong>Resolved</strong>.</p>
+      </div>
+
+      <!-- Quick Selector Form -->
+      <div class="card" style="margin-bottom: 24px;">
+        <div class="form-group" style="margin-bottom: 0;">
+          <label for="complaint-picker">Select an Existing Complaint from Database:</label>
+          <select id="complaint-picker" class="form-control">
+            <option value="">-- Choose a Complaint to Load --</option>
+          </select>
+          <div class="form-hint">Selecting an item will automatically populate its details below.</div>
+        </div>
+      </div>
+
+      <!-- Complaint Details Preview Card (Appears when loaded) -->
+      <div id="complaint-preview" class="card" style="display: none; margin-bottom: 24px; border-left: 5px solid var(--accent);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600;">Target Complaint ID:</span>
+            <span id="preview-id" class="complaint-id-tag" style="font-size: 1.1rem; margin-left: 6px;">CMP-XXXX</span>
+          </div>
+          <div id="preview-status-badge"></div>
+        </div>
+
+        <div class="details-meta-grid" style="margin: 12px 0;">
+          <div class="meta-item">
+            <div class="meta-label">Student Name & Roll</div>
+            <div class="meta-val" id="preview-student">-</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Course</div>
+            <div class="meta-val" id="preview-course">-</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Category</div>
+            <div class="meta-val" id="preview-category">-</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Date Lodged</div>
+            <div class="meta-val" id="preview-created">-</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 10px;">
+          <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Subject:</div>
+          <div id="preview-subject" style="font-weight: 600; color: var(--text-main); margin-bottom: 6px;">-</div>
+          <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Description:</div>
+          <p id="preview-desc" style="font-size: 0.92rem; color: var(--text-main); background: var(--bg-alt); padding: 10px 14px; border-radius: var(--radius-sm); margin-top: 4px;"></p>
+        </div>
+      </div>
+
+      <!-- Update Form -->
+      <div class="card">
+        <form id="dedicated-update-form">
+          <div class="form-section-title">
+            <span>✏️</span>
+            <span>Modify Complaint Status & Record Resolution Remarks</span>
+          </div>
+
+          <!-- Complaint ID -->
+          <div class="form-group">
+            <label for="complaint_id_input">Complaint ID <span class="required">*</span></label>
+            <input type="text" id="complaint_id_input" class="form-control" placeholder="e.g. CMP-2026-1001" required>
+            <div class="form-hint">Enter or paste the exact Complaint ID to modify.</div>
+          </div>
+
+          <!-- New Status -->
+          <div class="form-group">
+            <label for="status_select">New Resolution Status <span class="required">*</span></label>
+            <select id="status_select" class="form-control" required>
+              <option value="Pending">⏳ Pending (Under Initial Review / Awaiting Verification)</option>
+              <option value="In Progress">🔄 In Progress (Assigned to Department / Action in Progress)</option>
+              <option value="Resolved">✓ Resolved (Issue Addressed & Rectified)</option>
+            </select>
+          </div>
+
+          <!-- Remarks -->
+          <div class="form-group">
+            <label for="remarks_input">Action Remarks / Resolution Log</label>
+            <textarea id="remarks_input" class="form-control" rows="4" placeholder="Detail the steps taken, assigned staff member, work orders dispatched, or completion note..."></textarea>
+            <div class="form-hint">These notes are visible to students when checking their complaint status.</div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" id="save-status-btn" class="btn btn-primary" style="flex: 2;">
+              💾 Save Status Update
+            </button>
+            <a href="complaint-records.html" class="btn btn-secondary" style="flex: 1;">
+              Back to Records
+            </a>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Group 7 &bull; Student Complaint Portal</h4>
+          <p>Module 5: Update Complaint Status implementation.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Navigation</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="submit-complaint.html">Submit Complaint</a></li>
+            <li><a href="complaint-records.html">Complaint Records</a></li>
+            <li><a href="search-complaint.html">Search Complaint</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Allowed Status Transitions</h4>
+          <p>
+            <span class="badge badge-pending">Pending</span> &rarr; 
+            <span class="badge badge-progress">In Progress</span> &rarr; 
+            <span class="badge badge-resolved">Resolved</span>
+          </p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        &copy; 2026 Student Complaint Management System &bull; Group 7 Project Submission
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/update.js"></script>
+</body>
+</html>

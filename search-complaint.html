@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search & Track Complaint | Student Complaint Management System</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Notification & Status Bar -->
+  <div class="top-bar">
+    <div class="container">
+      <div>GROUP 7 &bull; Student Grievance Redressal & Complaint Management Portal</div>
+      <div id="system-status-indicator" class="badge-group">Checking backend...</div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">🎓</div>
+        <div class="brand-text">
+          <h1>Student Grievance Portal</h1>
+          <p>Group 7 Complaint Management System</p>
+        </div>
+      </a>
+
+      <button class="mobile-menu-btn" aria-label="Toggle menu">☰</button>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="submit-complaint.html" class="nav-link">Submit Complaint</a></li>
+        <li><a href="complaint-records.html" class="nav-link">Complaint Records</a></li>
+        <li><a href="update-status.html" class="nav-link">Update Status</a></li>
+        <li><a href="search-complaint.html" class="nav-link active">Search & Track</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Main Content (Module 6) -->
+  <main class="main-content">
+    <div class="container" style="max-width: 860px;">
+
+      <div class="page-header">
+        <span class="module-badge">Module 6 &bull; Real-Time Tracker</span>
+        <h2>Search & Track Complaint</h2>
+        <p>Enter your unique <strong>Complaint ID</strong> to look up the complete grievance lifecycle, assigned department, and live resolution status.</p>
+      </div>
+
+      <!-- Search Box Card -->
+      <div class="card" style="margin-bottom: 28px;">
+        <form id="search-form">
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label for="search_complaint_id">Enter Complaint Tracking ID <span class="required">*</span></label>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <input type="text" id="search_complaint_id" class="form-control" style="flex: 3; font-family: monospace; font-size: 1.05rem;" placeholder="e.g. CMP-2026-1001" required>
+              <button type="submit" id="search-submit-btn" class="btn btn-primary" style="flex: 1; min-width: 160px;">
+                🔍 Search Complaint
+              </button>
+            </div>
+            <div class="form-hint" style="margin-top: 10px;">
+              💡 <strong>Quick test IDs:</strong> 
+              <button type="button" class="btn btn-secondary btn-sm" onclick="quickFillSearch('CMP-2026-1001')">CMP-2026-1001</button>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="quickFillSearch('CMP-2026-1002')">CMP-2026-1002</button>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="quickFillSearch('CMP-2026-1003')">CMP-2026-1003</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Not Found Warning Box -->
+      <div id="search-not-found" class="card" style="display: none; border-left: 5px solid var(--danger); text-align: center; padding: 36px 20px;">
+        <div style="font-size: 2.2rem; margin-bottom: 10px;">🔎</div>
+        <h3 style="color: var(--danger); margin-bottom: 6px;">No Complaint Found</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">
+          We could not locate any grievance record registered with ID <strong id="not-found-query" style="color: var(--text-main);"></strong>.
+        </p>
+        <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 8px;">
+          Please verify the spelling or check the <a href="complaint-records.html" style="color: var(--accent); font-weight: 600;">Complaint Records ledger</a> for the full list of submissions.
+        </p>
+      </div>
+
+      <!-- Comprehensive Complaint Details & Tracker Card -->
+      <div id="search-result-card" class="card" style="display: none;">
+
+        <!-- Card Header with ID and Status Badge -->
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 18px; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600;">Complaint Tracking Record</div>
+            <h3 id="res-complaint-id" style="font-size: 1.6rem; font-family: monospace; color: var(--primary); font-weight: 800;">CMP-2026-XXXX</h3>
+          </div>
+          <div id="res-status-badge"></div>
+        </div>
+
+        <!-- 3-Stage Progress Tracker Stepper -->
+        <div style="margin-bottom: 28px;">
+          <h4 style="font-size: 0.95rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">Lifecycle Status Flow</h4>
+          <div class="status-tracker">
+            <div class="tracker-progress-line" id="tracker-progress-line" style="width: 0%;"></div>
+            
+            <!-- Step 1 -->
+            <div class="tracker-step" id="step-pending">
+              <div class="tracker-bubble">1</div>
+              <div class="tracker-label">Submitted & Pending</div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="tracker-step" id="step-progress">
+              <div class="tracker-bubble">2</div>
+              <div class="tracker-label">Under Investigation / In Progress</div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="tracker-step" id="step-resolved">
+              <div class="tracker-bubble">3</div>
+              <div class="tracker-label">Resolved & Rectified</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section: Student Details (Module 2 mapping) -->
+        <div class="form-section-title">
+          <span>👤</span>
+          <span>Student Information</span>
+        </div>
+
+        <div class="details-meta-grid">
+          <div class="meta-item">
+            <div class="meta-label">Student Name</div>
+            <div class="meta-val" id="res-student-name">-</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Roll Number</div>
+            <div class="meta-val" id="res-roll-no">-</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Course / Program</div>
+            <div class="meta-val" id="res-course">-</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Official Email</div>
+            <div class="meta-val" id="res-email">-</div>
+          </div>
+        </div>
+
+        <!-- Section: Complaint Particulars (Module 3 mapping) -->
+        <div class="form-section-title" style="margin-top: 24px;">
+          <span>📋</span>
+          <span>Complaint Details</span>
+        </div>
+
+        <div class="details-meta-grid">
+          <div class="meta-item" style="grid-column: 1 / -1;">
+            <div class="meta-label">Complaint Subject</div>
+            <div class="meta-val" id="res-subject" style="font-size: 1.1rem; color: var(--primary);">-</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Category</div>
+            <div class="meta-val" id="res-category">-</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Date Submitted</div>
+            <div class="meta-val" id="res-created-at">-</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Last Status Update</div>
+            <div class="meta-val" id="res-updated-at">-</div>
+          </div>
+        </div>
+
+        <!-- Description Box -->
+        <div style="margin-top: 14px;">
+          <div class="meta-label" style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Full Description:</div>
+          <div id="res-description" style="background: var(--bg-alt); padding: 14px 18px; border-radius: var(--radius-md); font-size: 0.95rem; line-height: 1.6; color: var(--text-main); white-space: pre-wrap;"></div>
+        </div>
+
+        <!-- Remarks Box (Module 5 action log) -->
+        <div id="res-remarks-box" class="remarks-callout" style="display: none;">
+          <h4>Administrative Notes & Resolution Log:</h4>
+          <p id="res-remarks"></p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display: flex; gap: 12px; margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--border-color); flex-wrap: wrap;">
+          <button type="button" class="btn btn-secondary" onclick="printReceipt()">
+            🖨️ Print Acknowledgement Receipt
+          </button>
+          <a id="res-update-status-link" href="update-status.html" class="btn btn-primary">
+            ✏️ Update Status for this Complaint
+          </a>
+          <a href="complaint-records.html" class="btn btn-secondary">
+            View All Complaints
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Group 7 &bull; Student Complaint Portal</h4>
+          <p>Module 6: Search Complaint using Complaint ID implementation.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="submit-complaint.html">Submit Complaint</a></li>
+            <li><a href="complaint-records.html">Complaint Records</a></li>
+            <li><a href="update-status.html">Update Status</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Status Lifecycle</h4>
+          <p>Real-time queries pull records matching <code>Complaint_ID</code>, mapping directly to both <code>Student</code> and <code>Complaint</code> tables.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        &copy; 2026 Student Complaint Management System &bull; Group 7 Project Submission
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/search.js"></script>
+  <script>
+    function quickFillSearch(id) {
+      document.getElementById('search_complaint_id').value = id;
+      performSearch(id);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complaint Records | Student Complaint Management System</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Notification & Status Bar -->
+  <div class="top-bar">
+    <div class="container">
+      <div>GROUP 7 &bull; Student Grievance Redressal & Complaint Management Portal</div>
+      <div id="system-status-indicator" class="badge-group">Checking backend...</div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">🎓</div>
+        <div class="brand-text">
+          <h1>Student Grievance Portal</h1>
+          <p>Group 7 Complaint Management System</p>
+        </div>
+      </a>
+
+      <button class="mobile-menu-btn" aria-label="Toggle menu">☰</button>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="submit-complaint.html" class="nav-link">Submit Complaint</a></li>
+        <li><a href="complaint-records.html" class="nav-link active">Complaint Records</a></li>
+        <li><a href="update-status.html" class="nav-link">Update Status</a></li>
+        <li><a href="search-complaint.html" class="nav-link">Search & Track</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Main Content (Module 4) -->
+  <main class="main-content">
+    <div class="container">
+
+      <div class="page-header" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px;">
+        <div>
+          <span class="module-badge">Module 4 &bull; Central Ledger</span>
+          <h2>All Complaint Records</h2>
+          <p>Comprehensive register of all logged grievances, student information, category classifications, and current resolution statuses.</p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <a href="submit-complaint.html" class="btn btn-primary btn-sm">+ New Complaint</a>
+          <button class="btn btn-secondary btn-sm" onclick="resetDemoData()" title="Reload original sample complaints">↺ Reset Data</button>
+        </div>
+      </div>
+
+      <!-- Controls: Search, Filters & Counters -->
+      <div class="card" style="padding: 16px 20px; margin-bottom: 24px;">
+        <div class="table-controls" style="margin-bottom: 0;">
+          
+          <div class="search-input-wrap">
+            <span class="search-input-icon">🔍</span>
+            <input type="text" id="records-search" class="form-control" placeholder="Search by ID, student, roll, or keyword...">
+          </div>
+
+          <div class="filter-group">
+            <label for="filter-status" style="font-size: 0.86rem; font-weight: 600; color: var(--text-muted);">Status:</label>
+            <select id="filter-status" class="filter-select">
+              <option value="All">All Statuses</option>
+              <option value="Pending">Pending</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Resolved">Resolved</option>
+            </select>
+
+            <label for="filter-category" style="font-size: 0.86rem; font-weight: 600; color: var(--text-muted); margin-left: 8px;">Category:</label>
+            <select id="filter-category" class="filter-select">
+              <option value="All">All Categories</option>
+              <option value="Academic">Academic</option>
+              <option value="Infrastructure & Lab">Infrastructure & Lab</option>
+              <option value="Hostel & Mess">Hostel & Mess</option>
+              <option value="Library">Library</option>
+              <option value="Transportation">Transportation</option>
+              <option value="Administration & Fees">Administration & Fees</option>
+              <option value="Sports & Extracurricular">Sports & Extracurricular</option>
+              <option value="Other">Other</option>
+            </select>
+
+            <span id="records-count" class="badge badge-category" style="margin-left: 8px; font-weight: 700;">Loading...</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Module 4 Data Table -->
+      <div class="table-responsive">
+        <table class="complaints-table">
+          <thead>
+            <tr>
+              <th>Complaint ID</th>
+              <th>Student Details (Name, Roll, Course, Email)</th>
+              <th>Subject & Description</th>
+              <th>Category</th>
+              <th>Status</th>
+              <th>Logged On</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="complaints-table-body">
+            <!-- Dynamically populated via js/records.js -->
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Module 5: Quick Status Update Modal -->
+  <div id="status-update-modal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Update Complaint Status (Module 5)</h3>
+        <button class="modal-close" onclick="closeUpdateModal()">&times;</button>
+      </div>
+      <form id="update-status-form">
+        <div class="modal-body">
+          <input type="hidden" id="update-modal-id">
+          
+          <div style="margin-bottom: 16px;">
+            <div style="font-size: 0.82rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Updating Record:</div>
+            <div id="update-modal-id-label" style="font-size: 1.25rem; font-weight: 800; color: var(--primary); font-family: monospace;">CMP-XXXX</div>
+          </div>
+
+          <div class="form-group">
+            <label for="update-modal-status">Change Complaint Status <span class="required">*</span></label>
+            <select id="update-modal-status" class="form-control" required>
+              <option value="Pending">Pending (Under Initial Review)</option>
+              <option value="In Progress">In Progress (Action Initiated)</option>
+              <option value="Resolved">Resolved (Rectified & Closed)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="update-modal-remarks">Official Action Remarks / Notes</label>
+            <textarea id="update-modal-remarks" class="form-control" rows="3" placeholder="e.g. Assigned to departmental maintenance supervisor; parts ordered."></textarea>
+            <div class="form-hint">These notes will be visible to the student during complaint tracking.</div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeUpdateModal()">Cancel</button>
+          <button type="submit" id="update-modal-save-btn" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Group 7 &bull; Student Complaint Portal</h4>
+          <p>Module 4 (Complaint Records Ledger) and Module 5 (Status Update integration).</p>
+        </div>
+        <div class="footer-col">
+          <h4>System Modules</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="submit-complaint.html">Submit Complaint</a></li>
+            <li><a href="update-status.html">Update Status</a></li>
+            <li><a href="search-complaint.html">Search by ID</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Table Joining</h4>
+          <p>Performs SQL JOIN between <code>Student</code> and <code>Complaint</code> tables via <code>Student_ID</code>.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        &copy; 2026 Student Complaint Management System &bull; Group 7 Project Submission
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/records.js"></script>
+</body>
+</html>

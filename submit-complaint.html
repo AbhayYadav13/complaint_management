@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit Complaint | Student Complaint Management System</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Notification & Status Bar -->
+  <div class="top-bar">
+    <div class="container">
+      <div>GROUP 7 &bull; Student Grievance Redressal & Complaint Management Portal</div>
+      <div id="system-status-indicator" class="badge-group">Checking backend...</div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">🎓</div>
+        <div class="brand-text">
+          <h1>Student Grievance Portal</h1>
+          <p>Group 7 Complaint Management System</p>
+        </div>
+      </a>
+
+      <button class="mobile-menu-btn" aria-label="Toggle menu">☰</button>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="submit-complaint.html" class="nav-link active">Submit Complaint</a></li>
+        <li><a href="complaint-records.html" class="nav-link">Complaint Records</a></li>
+        <li><a href="update-status.html" class="nav-link">Update Status</a></li>
+        <li><a href="search-complaint.html" class="nav-link">Search & Track</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container" style="max-width: 860px;">
+
+      <div class="page-header">
+        <span class="module-badge">Modules 2 & 3 &bull; Lodging Gateway</span>
+        <h2>Lodge a Student Complaint</h2>
+        <p>Please enter your student profile details and full particulars of the issue. A unique Complaint ID will be automatically generated upon submission.</p>
+      </div>
+
+      <div class="card">
+        <form id="complaint-form" novalidate>
+
+          <!-- Module 2: Student Details Form Section -->
+          <div class="form-section-title">
+            <span>👤</span>
+            <span>Module 2: Student Details</span>
+          </div>
+
+          <div class="grid-cols-2">
+            <!-- Student Name -->
+            <div class="form-group">
+              <label for="student_name">Student Full Name <span class="required">*</span></label>
+              <input type="text" id="student_name" class="form-control" placeholder="e.g. Aarav Sharma" required>
+              <div class="form-hint">Enter your official enrolled name.</div>
+            </div>
+
+            <!-- Roll Number -->
+            <div class="form-group">
+              <label for="roll_no">Student Roll Number <span class="required">*</span></label>
+              <input type="text" id="roll_no" class="form-control" placeholder="e.g. 2026CSE014" required>
+              <div class="form-hint">Unique institutional identification number.</div>
+            </div>
+          </div>
+
+          <div class="grid-cols-2">
+            <!-- Course -->
+            <div class="form-group">
+              <label for="course">Academic Course / Program <span class="required">*</span></label>
+              <select id="course" class="form-control" required>
+                <option value="">-- Select Your Enrolled Program --</option>
+                <option value="B.Tech Computer Science & Engineering">B.Tech Computer Science & Engineering</option>
+                <option value="B.Tech Information Technology">B.Tech Information Technology</option>
+                <option value="B.Tech Electronics & Communication">B.Tech Electronics & Communication</option>
+                <option value="B.Tech Mechanical Engineering">B.Tech Mechanical Engineering</option>
+                <option value="B.Tech Civil Engineering">B.Tech Civil Engineering</option>
+                <option value="Master of Computer Applications (MCA)">Master of Computer Applications (MCA)</option>
+                <option value="Master of Business Administration (MBA)">Master of Business Administration (MBA)</option>
+                <option value="Bachelor of Computer Applications (BCA)">Bachelor of Computer Applications (BCA)</option>
+                <option value="Other Degree Program">Other Degree Program</option>
+              </select>
+            </div>
+
+            <!-- Student Email -->
+            <div class="form-group">
+              <label for="email">Student Email Address <span class="required">*</span></label>
+              <input type="email" id="email" class="form-control" placeholder="e.g. student@college.edu" required>
+              <div class="form-hint">Status notifications will be forwarded here.</div>
+            </div>
+          </div>
+
+          <!-- Module 3: Submit Complaint Form Section -->
+          <div class="form-section-title" style="margin-top: 28px;">
+            <span>📋</span>
+            <span>Module 3: Complaint Particulars</span>
+          </div>
+
+          <!-- Subject -->
+          <div class="form-group">
+            <label for="subject">Complaint Subject / Title <span class="required">*</span></label>
+            <input type="text" id="subject" class="form-control" placeholder="Brief summary of the grievance (e.g. Computer Lab 3 Projector Issue)" required>
+          </div>
+
+          <!-- Category -->
+          <div class="form-group">
+            <label for="category">Complaint Category <span class="required">*</span></label>
+            <select id="category" class="form-control" required>
+              <option value="">-- Select Category --</option>
+              <option value="Academic">Academic (Curriculum, Lectures, Faculty, Marks)</option>
+              <option value="Infrastructure & Lab">Infrastructure & Lab (Equipment, PCs, Air Conditioning, Seating)</option>
+              <option value="Hostel & Mess">Hostel & Mess (Room Maintenance, Water, Hygiene, Food)</option>
+              <option value="Library">Library & Digital Resources (Books, Proxy, Journals)</option>
+              <option value="Transportation">Transportation & Campus Bus Routes</option>
+              <option value="Administration & Fees">Administration & Accounts / Fees</option>
+              <option value="Sports & Extracurricular">Sports, Gymnasium & Extracurricular</option>
+              <option value="Other">Other Miscellaneous Grievances</option>
+            </select>
+          </div>
+
+          <!-- Description -->
+          <div class="form-group">
+            <label for="description">Detailed Description of Complaint <span class="required">*</span></label>
+            <textarea id="description" class="form-control" rows="5" placeholder="Provide complete facts, specific locations, date/time observed, and any previous attempts made to resolve..." required></textarea>
+            <div class="form-hint">Detailed descriptions accelerate administrative verification and resolution.</div>
+          </div>
+
+          <!-- Unique ID notice -->
+          <div style="background: var(--bg-alt); padding: 12px 16px; border-radius: var(--radius-md); font-size: 0.86rem; color: var(--text-muted); margin-bottom: 20px;">
+            💡 <strong>Unique ID Assignment:</strong> A unique tracking identifier formatted as <code>CMP-2026-XXXX</code> will be automatically assigned and recorded in the database.
+          </div>
+
+          <!-- Form Actions -->
+          <div class="form-actions">
+            <button type="submit" id="submit-btn" class="btn btn-primary" style="flex: 2;">
+              🚀 Submit Complaint & Generate ID
+            </button>
+            <button type="reset" class="btn btn-secondary" style="flex: 1;">
+              Clear Form
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Success Confirmation Modal (Generated Complaint ID) -->
+  <div id="success-modal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header" style="background: var(--primary-light);">
+        <h3 style="color: var(--primary);">🎉 Complaint Lodged Successfully!</h3>
+        <button class="modal-close" onclick="closeSuccessModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="color: var(--text-muted); margin-bottom: 16px;">
+          Your complaint has been logged into the system. Please preserve your unique <strong>Complaint ID</strong> for future tracking and status inquiries.
+        </p>
+
+        <div style="background: #ffffff; border: 2px dashed var(--accent); border-radius: var(--radius-md); padding: 18px; text-align: center; margin-bottom: 20px;">
+          <div style="font-size: 0.82rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600;">Your Unique Complaint ID</div>
+          <div id="modal-complaint-id" style="font-size: 1.85rem; font-weight: 800; color: var(--primary); font-family: monospace; letter-spacing: 1px; margin: 6px 0;">CMP-2026-XXXX</div>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="copyComplaintId()">📋 Copy ID to Clipboard</button>
+        </div>
+
+        <div class="details-meta-grid" style="margin: 0;">
+          <div class="meta-item">
+            <div class="meta-label">Student Name</div>
+            <div class="meta-val" id="modal-student-name">-</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Roll Number</div>
+            <div class="meta-val" id="modal-roll-no">-</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Course</div>
+            <div class="meta-val" id="modal-course">-</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Status</div>
+            <div class="meta-val" id="modal-status">-</div>
+          </div>
+          <div class="meta-item" style="grid-column: 1 / -1;">
+            <div class="meta-label">Subject</div>
+            <div class="meta-val" id="modal-subject">-</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Category</div>
+            <div class="meta-val" id="modal-category">-</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Date Lodged</div>
+            <div class="meta-val" id="modal-date">-</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a id="modal-track-link" href="search-complaint.html" class="btn btn-primary">🔍 Track This Complaint</a>
+        <a href="complaint-records.html" class="btn btn-secondary">View in Records</a>
+        <button type="button" class="btn btn-secondary" onclick="closeSuccessModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Group 7 &bull; Student Complaint Portal</h4>
+          <p>Module 2 (Student Details) & Module 3 (Submit Complaint) implementation.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="index.html">Home Page</a></li>
+            <li><a href="complaint-records.html">Complaint Records</a></li>
+            <li><a href="search-complaint.html">Search Complaint</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Technical Constraints</h4>
+          <p>Built purely with HTML, CSS, JavaScript, and PHP/MySQL database tables (Student & Complaint).</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        &copy; 2026 Student Complaint Management System &bull; Group 7 Project Submission
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/submit.js"></script>
+</body>
+</html>
